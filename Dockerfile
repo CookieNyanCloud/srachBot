@@ -8,6 +8,6 @@ COPY ./ ./
 
 RUN go mod download
 
-RUN go build -o tg-sota-feedback ./main.go
+RUN go build -o tg-srach ./main.go
 
 CMD ["./tg-srach"]
