@@ -71,9 +71,6 @@ func main() {
 			text := fmt.Sprintf("статистика:\n%v", out)
 			msg := tgbotapi.NewMessage(conf, text)
 			_, _ = bot.Send(msg)
-		default:
-			msg := tgbotapi.NewMessage(conf, "/srach\n/last\n/stat")
-			_, _ = bot.Send(msg)
 		}
 	}
 }
