@@ -30,7 +30,7 @@ func main() {
 		fmt.Printf("conf: %v\n", err)
 	}
 	bot, updates := tg.StartSotaBot(token)
-	last := time.Now().Add(-2 * time.Hour)
+	last := time.Now().Add(-50 * time.Hour)
 	all := make([]*durafmt.Durafmt, 0)
 	for update := range updates {
 		if update.Message == nil {
