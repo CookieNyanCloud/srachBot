@@ -25,7 +25,7 @@ func main() {
 			fmt.Printf("local env: %v\n", err)
 		}
 	}
-	file, err := os.OpenFile("data.txt", os.O_APPEND|os.O_WRONLY|os.O_CREATE, 0600)
+	file, err := os.OpenFile("data.txt", os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		fmt.Printf("open file: %v\n", err)
 	}
@@ -37,11 +37,11 @@ func main() {
 	}
 	bot, updates := tg.StartSotaBot(token)
 	last := time.Now().Add(-50 * time.Hour)
-	all := make([]*durafmt.Durafmt, 0)
-	err = readDateFile(all)
+	all, err := readDateFile(file)
 	if err != nil {
 		fmt.Printf("read: %v\n", err)
 	}
+	fmt.Println("AAAAAA", all)
 	for update := range updates {
 		if update.Message == nil {
 			continue
@@ -94,27 +94,29 @@ func main() {
 }
 
 func saveDate(file *os.File, date *durafmt.Durafmt) error {
-	_, err := file.WriteString(date.String())
+	_, err := file.WriteString("\n" + date.Duration().String())
 	return err
 }
 
-func readDateFile(date []*durafmt.Durafmt) error {
-	file, err := os.Open("data.txt")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+func readDateFile(file *os.File) ([]*durafmt.Durafmt, error) {
+	date := make([]*durafmt.Durafmt, 0)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line, err := durafmt.ParseString(scanner.Text())
+		fmt.Println("start")
+		fmt.Println(line)
+		fmt.Println("end")
 		if err != nil {
-			return err
+			return nil, err
 		}
 		date = append(date, line)
 	}
 
 	if err := scanner.Err(); err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+	fmt.Println("start")
+	fmt.Println(date)
+	fmt.Println("end")
+	return date, nil
 }

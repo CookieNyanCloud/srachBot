@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-  tg-sota-feedback:
+  tg-srach:
     image: tg-srach
     build: ./
     env_file:
